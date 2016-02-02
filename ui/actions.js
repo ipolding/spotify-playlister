@@ -1,12 +1,12 @@
-import * as playlistDispatcher from './dispatcher.js'
+import {PlaylistDispatcher} from './dispatcher.js'
 import * as PlaylisterConstants from './constants.js'
 
 /** Actions */
 //dispatches an artist query event to the dispatcher
 
   export function createNewQuery(artistArray) {
-    console.log("create new query action triggered")
-    playlistDispatcher.playlistDispatcher.dispatch({
+    console.log("Create new query action triggered")
+    PlaylistDispatcher.dispatch({
       actionType: PlaylisterConstants.NEW_QUERY,
       query:      artistArray
     });
@@ -28,7 +28,7 @@ import * as PlaylisterConstants from './constants.js'
 
     var responseObject = JSON.parse(xmlhttp.responseText);
 
-      playlistDispatcher.dispatch({
+      PlaylistDispatcher.dispatch({
       actionType: PlaylisterConstants.PLAYLIST_FOUND,
       response:   responseObject
     });

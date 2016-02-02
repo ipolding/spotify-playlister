@@ -1,17 +1,13 @@
 import React from 'react';
-import * as PlaylisterActions from './actions.js'  ;
 
-// /**
-// *  Views
-// */
-export class TextEntry extends React.Component {
+/**
+*  Views
+*/
+class TextEntry extends React.Component{
 
   constructor(props) {
     super(props);
-    this.handleBlur = this.handleBlur.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.keyHasBeenPressed = this.keyHasBeenPressed.bind(this);
-    this.state = { index: props.index, text:  props.initialValue};
+    return { index: props.index, text:  props.initialValue};
   }
 
   handleChange(e){
@@ -36,7 +32,7 @@ export class TextEntry extends React.Component {
     this.setState({index : this.props.dataPosition, text : ''});
   }
 
-  keyHasBeenPressed(e) {
+  keyHasBeenPressed (e) {
       if (e.key == "Enter") {
         this.flushState();      
         this.createEntry();
@@ -62,20 +58,22 @@ export class TextEntry extends React.Component {
 class PreviousTextEntries extends React.Component { 
   
   render() {
-      var updateEntry = this.props.updateEntry;
-      var createEntry = this.props.createEntry;
-      var parentData = this.props.data;
+      // var updateEntry = this.props.updateEntry;
+      // var createEntry = this.props.createEntry;
+      // var parentData = this.props.data;
       
 
-      var textEntryNodes = parentData.map(function(textEntry) { //REFACTOR ME INTO PRIVATE METHOD
-          return (<TextEntry 
-                      key={textEntry.index}
-                      index={textEntry.index}
-                      initialValue={textEntry.value}
-                      createEntry={createEntry} 
-                  />);});
-        return (<div className="PreviousTextEntries">{textEntryNodes}</div>);
-      }
+      // var textEntryNodes = parentData.map(function(textEntry) { //REFACTOR ME INTO PRIVATE METHOD
+      //     return (<TextEntry 
+      //                 key={textEntry.index}
+      //                 index={textEntry.index}
+      //                 initialValue={textEntry.value}
+      //                 createEntry={createEntry} 
+      //             />);});
+      //   return (<div className="PreviousTextEntries">{textEntryNodes}</div>);
+      // }
+  return (<div> TEXT ENTRY LOADING TEST </div>);
+  }
 }
 
 class TextEntryBox extends React.Component{
@@ -85,16 +83,15 @@ class TextEntryBox extends React.Component{
     return false;
   }
 
-    render() {
-     return (
-       <div className="textEntryBox" onSubmit={this.handleSubmit}>
-         <h1>Artists</h1>
-         <PreviousTextEntries updateEntry={this.props.updateEntry} createEntry={this.props.createEntry} data={this.props.data} />
-         <TextEntry updateEntry={this.props.updateEntry} createEntry={this.props.createEntry} data={this.props.data} />
-         </div>
-     );
-   }
-
+  render() {
+    return (
+      <div className="textEntryBox" onSubmit={this.handleSubmit}>
+        <h1>Artists</h1>
+        <PreviousTextEntries updateEntry={this.props.updateEntry} createEntry={this.props.createEntry} data={this.props.data} />
+        <TextEntry updateEntry={this.props.updateEntry} createEntry={this.props.createEntry} data={this.props.data} />
+        </div>
+    );
+  }
 }
 
 class Track extends React.Component {
@@ -111,9 +108,6 @@ export class PlayListSubmitter extends React.Component {
 
   constructor(props) {
     super(props);
-    this.getPlaylist = this.getPlaylist.bind(this);
-    this.createEntry = this.createEntry.bind(this);
-    this.updateEntry = this.updateEntry.bind(this);
     this.state = {children : 0, data: []};
   }
 
@@ -136,11 +130,14 @@ export class PlayListSubmitter extends React.Component {
     });
   }
 
-  getPlaylist() {
-    var query = this.state.data.map(getTextEntryValues);
+  getPlaylist () {
+    
+    var query = this.toJson();
     console.log("Dispatching: " + query)
     PlaylisterActions.createNewQuery(this.state.data.map(data => data.value));
+    
     PlaylisterActions.requestPlaylist(query);
+    
   }
 
   render() {
@@ -152,8 +149,13 @@ export class PlayListSubmitter extends React.Component {
     );
   }
 
-}
+  toJson () {
+    console.log("PlayListSubmitter state : " + JSON.stringify(this.state.data));
+    var stringArray = this.state.data.map(this.getTextEntryValues);
+    return stringArray;
+   }
 
-  function getTextEntryValues(textEntry) {
+  getTextEntryValues (textEntry) {
      return textEntry.value;
   }
+}

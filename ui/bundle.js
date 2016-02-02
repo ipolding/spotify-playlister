@@ -78,13 +78,11 @@
 
 	var PlaylisterActions = _interopRequireWildcard(_actions);
 
-	var _dispatcher = __webpack_require__(180);
-
-	var playlistDispatcher = _interopRequireWildcard(_dispatcher);
-
 	var _stores = __webpack_require__(183);
 
 	var Stores = _interopRequireWildcard(_stores);
+
+	var _views = __webpack_require__(184);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -178,192 +176,9 @@
 	*  Views
 	*/
 
-	var TextEntry = _react2.default.createClass({
-	  displayName: 'TextEntry',
-
-	  getInitialState: function getInitialState() {
-
-	    var text = this.props.initialValue;
-	    var index = this.props.index;
-	    return {
-	      index: index,
-	      text: text
-	    };
-	  },
-
-	  handleChange: function handleChange(e) {
-	    this.setState({
-	      index: this.props.dataPosition,
-	      text: e.target.value
-	    });
-	  },
-
-	  handleBlur: function handleBlur(e) {
-	    if (typeof this.props.index !== 'undefined') {
-	      this.props.updateEntry(this.props.index, this.state.text);
-	    } else if (e.target.value) {
-	      this.createEntry();
-	      this.flushState();
-	    }
-	  },
-
-	  createEntry: function createEntry() {
-	    var textEntry = this.refs.textEntry.value;
-	    this.props.createEntry(textEntry);
-	  },
-
-	  flushState: function flushState() {
-	    this.setState({
-	      index: this.props.dataPosition,
-	      text: ''
-	    });
-	  },
-
-	  keyHasBeenPressed: function keyHasBeenPressed(e) {
-	    if (e.keyCode == 13) {
-	      this.flushState();
-
-	      this.createEntry();
-	    }
-	  },
-
-	  render: function render() {
-	    var message = this.state.message;
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement('input', { placeholder: 'Artist...',
-	        value: this.state.text,
-	        className: 'previousTextEntry',
-	        onBlur: this.handleBlur,
-	        onChange: this.handleChange,
-	        onKeyDown: this.keyHasBeenPressed,
-	        ref: 'textEntry' })
-	    );
-	  }
-	});
-
-	var PreviousTextEntries = _react2.default.createClass({
-	  displayName: 'PreviousTextEntries',
-
-	  render: function render() {
-	    var updateEntry = this.props.updateEntry;
-	    var createEntry = this.props.createEntry;
-	    var parentData = this.props.data;
-	    var textEntryNodes = parentData.map(function (textEntry) {
-
-	      return _react2.default.createElement(TextEntry, {
-	        key: textEntry.index,
-	        index: textEntry.index,
-	        initialValue: textEntry.value,
-	        createEntry: createEntry
-	      });
-	    });
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'PreviousTextEntries' },
-	      textEntryNodes
-	    );
-	  } });
-
-	var TextEntryBox = _react2.default.createClass({
-	  displayName: 'TextEntryBox',
-
-	  handleSubmit: function handleSubmit(e) {
-	    e.defaultPrevented();
-	    return false;
-	  },
-
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'textEntryBox', onSubmit: this.handleSubmit },
-	      _react2.default.createElement(
-	        'h1',
-	        null,
-	        'Artists'
-	      ),
-	      _react2.default.createElement(PreviousTextEntries, { updateEntry: this.props.updateEntry, createEntry: this.props.createEntry, data: this.props.data }),
-	      _react2.default.createElement(TextEntry, { updateEntry: this.props.updateEntry, createEntry: this.props.createEntry, data: this.props.data })
-	    );
-	  }
-	});
-
-	var Track = _react2.default.createClass({
-	  displayName: 'Track',
-
-	  render: function render() {
-	    console.log(this.props.track);
-	    return _react2.default.createElement('iframe', { src: "https://embed.spotify.com/?uri=spotify:track:" + this.props.track, width: '300', height: '80', frameborder: '0', allowtransparency: 'true' });
-	  }
-	});
-
-	var PlayListSubmitter = _react2.default.createClass({
-	  displayName: 'PlayListSubmitter',
-
-	  updateEntry: function updateEntry(index, value) {
-	    var modifiedArray = this.state.data;
-	    console.log("modifiedArray " + JSON.stringify(modifiedArray));
-	    modifiedArray[index].value = value;
-	    this.setState({
-	      children: this.state.children++,
-	      data: modifiedArray
-	    });
-	  },
-
-	  createEntry: function createEntry(text) {
-	    var textEntries = this.state.data;
-	    var newTextEntrys = textEntries.concat([{ index: this.state.children++, value: text }]);
-	    this.setState({
-	      children: this.state.children++,
-	      data: newTextEntrys
-	    });
-	  },
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      children: 0,
-	      data: [] };
-	  },
-
-	  getPlaylist: function getPlaylist() {
-
-	    var query = this.toJson();
-	    console.log("Dispatching: " + query);
-	    PlaylisterActions.createNewQuery(this.state.data.map(function (data) {
-	      return data.value;
-	    }));
-
-	    PlaylisterActions.requestPlaylist(query);
-	  },
-
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'playlister', onSubmit: this.handleSubmit },
-	      _react2.default.createElement(TextEntryBox, { updateEntry: this.updateEntry, createEntry: this.createEntry, data: this.state.data }),
-	      _react2.default.createElement(
-	        'button',
-	        { onClick: this.getPlaylist, className: 'btn btn-primary btn-lg' },
-	        'Get Top Tracks! »'
-	      )
-	    );
-	  },
-
-	  toJson: function toJson() {
-	    console.log("PlayListSubmitter state : " + JSON.stringify(this.state.data));
-	    var stringArray = this.state.data.map(this.getTextEntryValues);
-	    return stringArray;
-	  },
-
-	  getTextEntryValues: function getTextEntryValues(textEntry) {
-	    return textEntry.value;
-	  }
-	});
-
 	var QueryContainer = _utils.Container.create(PlaylistContainer);
 
-	_reactDom2.default.render(_react2.default.createElement(PlayListSubmitter, null), document.getElementById('artistList'));
+	_reactDom2.default.render(_react2.default.createElement(_views.PlayListSubmitter, null), document.getElementById('artistList'));
 
 	_reactDom2.default.render(_react2.default.createElement(QueryContainer, null), document.getElementById('responseStore'));
 
@@ -16127,6 +15942,7 @@
 	 */
 	var EventInterface = {
 	  type: null,
+	  target: null,
 	  // currentTarget is set when dispatching; no use in copying it here
 	  currentTarget: emptyFunction.thatReturnsNull,
 	  eventPhase: null,
@@ -16160,8 +15976,6 @@
 	  this.dispatchConfig = dispatchConfig;
 	  this.dispatchMarker = dispatchMarker;
 	  this.nativeEvent = nativeEvent;
-	  this.target = nativeEventTarget;
-	  this.currentTarget = nativeEventTarget;
 
 	  var Interface = this.constructor.Interface;
 	  for (var propName in Interface) {
@@ -16172,7 +15986,11 @@
 	    if (normalize) {
 	      this[propName] = normalize(nativeEvent);
 	    } else {
-	      this[propName] = nativeEvent[propName];
+	      if (propName === 'target') {
+	        this.target = nativeEventTarget;
+	      } else {
+	        this[propName] = nativeEvent[propName];
+	      }
 	    }
 	  }
 
@@ -20021,7 +19839,10 @@
 	      }
 	    });
 
-	    nativeProps.children = content;
+	    if (content) {
+	      nativeProps.children = content;
+	    }
+
 	    return nativeProps;
 	  }
 
@@ -25494,7 +25315,7 @@
 
 	'use strict';
 
-	module.exports = '0.14.6';
+	module.exports = '0.14.7';
 
 /***/ },
 /* 166 */
@@ -26544,7 +26365,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.playlistDispatcher = undefined;
+	exports.PlaylistDispatcher = undefined;
 
 	var _flux = __webpack_require__(181);
 
@@ -26557,12 +26378,12 @@
 	/**
 	* Singleton Dispatcher
 	*/
-	var playlistDispatcher = new _flux.Dispatcher();
+	var PlaylistDispatcher = new _flux.Dispatcher();
 
 	/** Dispatcher */
 
 	//dispatcher updates the Artist query store when it receives an artist query event
-	playlistDispatcher.register(function (payload) {
+	PlaylistDispatcher.register(function (payload) {
 	  if (payload.actionType === PlaylisterConstants.NEW_QUERY) {
 	    console.log("Dispatcher says I know you searched for " + payload);
 	  } else if (payload.actionType === PlaylisterConstants.PLAYLIST_FOUND) {
@@ -26570,7 +26391,7 @@
 	  }
 	});
 
-	exports.playlistDispatcher = playlistDispatcher;
+	exports.PlaylistDispatcher = PlaylistDispatcher;
 
 /***/ },
 /* 181 */
@@ -26833,16 +26654,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.playlistResultStore = undefined;
-
 	var _utils = __webpack_require__(2);
-
-	var _dispatcher = __webpack_require__(180);
-
-	var playlistDispatcher = _interopRequireWildcard(_dispatcher);
 
 	var _constants = __webpack_require__(178);
 
@@ -26908,9 +26720,275 @@
 	  return PlaylistResultStore;
 	}(_utils.ReduceStore);
 
-	//call the constructor
+/***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
 
-	var playlistResultStore = exports.playlistResultStore = new PlaylistResultStore(playlistDispatcher.playlistDispatcher);
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.PlayListSubmitter = undefined;
+
+	var _react = __webpack_require__(21);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
+	*  Views
+	*/
+
+	var TextEntry = function (_React$Component) {
+	  _inherits(TextEntry, _React$Component);
+
+	  function TextEntry(props) {
+	    var _ret;
+
+	    _classCallCheck(this, TextEntry);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TextEntry).call(this, props));
+
+	    return _ret = {
+	      index: props.index,
+	      text: props.initialValue
+	    }, _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(TextEntry, [{
+	    key: 'handleChange',
+	    value: function handleChange(e) {
+	      this.setState({
+	        index: this.props.dataPosition,
+	        text: e.target.value
+	      });
+	    }
+	  }, {
+	    key: 'handleBlur',
+	    value: function handleBlur(e) {
+	      if (typeof this.props.index !== 'undefined') {
+	        this.props.updateEntry(this.props.index, this.state.text);
+	      } else if (e.target.value) {
+	        this.createEntry();
+	        this.flushState();
+	      }
+	    }
+	  }, {
+	    key: 'createEntry',
+	    value: function createEntry() {
+	      var textEntry = this.refs.textEntry.value;
+	      this.props.createEntry(textEntry);
+	    }
+	  }, {
+	    key: 'flushState',
+	    value: function flushState() {
+	      this.setState({ index: this.props.dataPosition, text: '' });
+	    }
+	  }, {
+	    key: 'keyHasBeenPressed',
+	    value: function keyHasBeenPressed(e) {
+	      if (e.key == "Enter") {
+	        this.flushState();
+
+	        this.createEntry();
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var message = this.state.message;
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement('input', { placeholder: 'Artist...',
+	          value: this.state.text,
+	          className: 'previousTextEntry',
+	          onBlur: this.handleBlur,
+	          onChange: this.handleChange,
+	          onKeyDown: this.keyHasBeenPressed,
+	          ref: 'textEntry' })
+	      );
+	    }
+	  }]);
+
+	  return TextEntry;
+	}(_react2.default.Component);
+
+	var PreviousTextEntries = function (_React$Component2) {
+	  _inherits(PreviousTextEntries, _React$Component2);
+
+	  function PreviousTextEntries() {
+	    _classCallCheck(this, PreviousTextEntries);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PreviousTextEntries).apply(this, arguments));
+	  }
+
+	  _createClass(PreviousTextEntries, [{
+	    key: 'render',
+	    value: function render() {
+	      var updateEntry = this.props.updateEntry;
+	      var createEntry = this.props.createEntry;
+	      var parentData = this.props.data;
+	      var textEntryNodes = parentData.map(function (textEntry) {
+	        //REFACTOR ME INTO PRIVATE METHOD
+	        return _react2.default.createElement(TextEntry, {
+	          key: textEntry.index,
+	          index: textEntry.index,
+	          initialValue: textEntry.value,
+	          createEntry: createEntry
+	        });
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'PreviousTextEntries' },
+	        textEntryNodes
+	      );
+	    }
+	  }]);
+
+	  return PreviousTextEntries;
+	}(_react2.default.Component);
+
+	var TextEntryBox = function (_React$Component3) {
+	  _inherits(TextEntryBox, _React$Component3);
+
+	  function TextEntryBox() {
+	    _classCallCheck(this, TextEntryBox);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(TextEntryBox).apply(this, arguments));
+	  }
+
+	  _createClass(TextEntryBox, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      e.defaultPrevented();
+	      return false;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'textEntryBox', onSubmit: this.handleSubmit },
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          'Artists'
+	        ),
+	        _react2.default.createElement(PreviousTextEntries, { updateEntry: this.props.updateEntry, createEntry: this.props.createEntry, data: this.props.data }),
+	        _react2.default.createElement(TextEntry, { updateEntry: this.props.updateEntry, createEntry: this.props.createEntry, data: this.props.data })
+	      );
+	    }
+	  }]);
+
+	  return TextEntryBox;
+	}(_react2.default.Component);
+
+	var Track = function (_React$Component4) {
+	  _inherits(Track, _React$Component4);
+
+	  function Track() {
+	    _classCallCheck(this, Track);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Track).apply(this, arguments));
+	  }
+
+	  _createClass(Track, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement('iframe', { src: "https://embed.spotify.com/?uri=spotify:track:" + this.props.track,
+	        width: '300', height: '80', frameborder: '0', allowtransparency: 'true' });
+	    }
+	  }]);
+
+	  return Track;
+	}(_react2.default.Component);
+
+	var PlayListSubmitter = exports.PlayListSubmitter = function (_React$Component5) {
+	  _inherits(PlayListSubmitter, _React$Component5);
+
+	  function PlayListSubmitter(props) {
+	    _classCallCheck(this, PlayListSubmitter);
+
+	    var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(PlayListSubmitter).call(this, props));
+
+	    _this5.state = { children: 0, data: [] };
+	    return _this5;
+	  }
+
+	  _createClass(PlayListSubmitter, [{
+	    key: 'updateEntry',
+	    value: function updateEntry(index, value) {
+	      var modifiedArray = this.state.data;
+	      console.log("modifiedArray " + JSON.stringify(modifiedArray));
+	      modifiedArray[index].value = value;
+	      this.setState({
+	        children: this.state.children++,
+	        data: modifiedArray
+	      });
+	    }
+	  }, {
+	    key: 'createEntry',
+	    value: function createEntry(text) {
+	      var textEntries = this.state.data;
+	      var newTextEntrys = textEntries.concat([{ index: this.state.children++, value: text }]);
+	      this.setState({
+	        children: this.state.children++,
+	        data: newTextEntrys
+	      });
+	    }
+	  }, {
+	    key: 'getPlaylist',
+	    value: function getPlaylist() {
+
+	      var query = this.toJson();
+	      console.log("Dispatching: " + query);
+	      PlaylisterActions.createNewQuery(this.state.data.map(function (data) {
+	        return data.value;
+	      }));
+
+	      PlaylisterActions.requestPlaylist(query);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'playlister', onSubmit: this.handleSubmit },
+	        _react2.default.createElement(TextEntryBox, { updateEntry: this.updateEntry, createEntry: this.createEntry, data: this.state.data }),
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: this.getPlaylist, className: 'btn btn-primary btn-lg' },
+	          'Get Top Tracks! »'
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'toJson',
+	    value: function toJson() {
+	      console.log("PlayListSubmitter state : " + JSON.stringify(this.state.data));
+	      var stringArray = this.state.data.map(this.getTextEntryValues);
+	      return stringArray;
+	    }
+	  }, {
+	    key: 'getTextEntryValues',
+	    value: function getTextEntryValues(textEntry) {
+	      return textEntry.value;
+	    }
+	  }]);
+
+	  return PlayListSubmitter;
+	}(_react2.default.Component);
 
 /***/ }
 /******/ ]);

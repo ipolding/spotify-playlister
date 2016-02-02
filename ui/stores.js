@@ -1,11 +1,10 @@
 import {ReduceStore} from 'flux/utils';
-import * as playlistDispatcher from './dispatcher.js'
 import * as PlaylisterConstants from './constants.js'
 
 /* Store */
 // keeps track of what query has been made
 
-class PlaylistResultStore extends ReduceStore {
+export class PlaylistResultStore extends ReduceStore {
 
    getInitialState() {
       return {query : [], result: {
@@ -13,7 +12,7 @@ class PlaylistResultStore extends ReduceStore {
               playlist : []}} ;
     }
 
-    getState() {
+    static getState() {
       console.log("get state: " + JSON.stringify(this._state));
       return this._state; //initialised in the parent constructor
     }
@@ -37,7 +36,3 @@ class PlaylistResultStore extends ReduceStore {
         }
     }
 }
-
-//call the constructor
-export var playlistResultStore = new PlaylistResultStore(playlistDispatcher.playlistDispatcher);
-
