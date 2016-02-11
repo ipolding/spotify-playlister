@@ -1,1 +1,1 @@
-import TheLot from './reactComponents.jsx'
+import TheLot from './react-components/playlister.jsx'

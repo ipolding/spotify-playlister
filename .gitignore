@@ -1,5 +1,6 @@
 *.class
 *.log
+*.swp
 
 # sbt specific
 .cache
@@ -18,3 +19,6 @@ project/plugins/project/
 
 # JavaScript
 node_modules/
+
+#Sublime
+*.sublime*

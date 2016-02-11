@@ -1,13 +1,13 @@
-import {ReduceStore} from 'flux/utils';
-import * as PlaylisterConstants from './constants.js'
+import {x,PlaylistDispatcher}                      from './dispatcher.js';
+import {ReduceStore}            from 'flux/utils';
+import * as PlaylisterConstants from './constants.js';
 
 /* Store */
-// keeps track of what query has been made
-
-export class PlaylistResultStore extends ReduceStore {
+class PlaylistResultStore extends ReduceStore {
 
    getInitialState() {
-      return {query : [], result: {
+      return {query : [], 
+              result: {
               artists  : [],
               playlist : []}} ;
     }
@@ -20,14 +20,13 @@ export class PlaylistResultStore extends ReduceStore {
     reduce(state, action) {
         switch (action.actionType) {
           case PlaylisterConstants.NEW_QUERY: {
-            console.log("reduce triggered")
+            console.log("PlaylistResultStore.reduce() triggered by new query")
             return {query : action.query}
           }
           break;
 
           case PlaylisterConstants.PLAYLIST_FOUND: {
-            console.log("reduce triggered by playlist found");
-            console.log(JSON.stringify(action.response));
+            console.log("PlaylistResultStore.reduce() triggered by playlist found");
             return {
                   query  : this.getState().query,
                   result : action.response
@@ -36,3 +35,6 @@ export class PlaylistResultStore extends ReduceStore {
         }
     }
 }
+
+var playlistResultStore = new PlaylistResultStore(PlaylistDispatcher);
+export {playlistResultStore}

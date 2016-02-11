@@ -1,14 +1,13 @@
 // Action --> Dispatcher --> Store --> View
 
-import {Container}   from 'flux/utils';
 import React   from 'react';
 import ReactDOM   from 'react-dom';
-import * as PlaylisterConstants from './constants.js'
-import {PlaylisterActions} from './actions.js'
-import {PlaylistResultStore} from './stores.js'
-import {PlayListSubmitter} from './views.jsx'
-
-// var PlaylisterConstants = {NEW_QUERY : 'new-query'};
+import {Container}   from 'flux/utils';
+import * as PlaylisterConstants from './flux-infra/constants.js'
+import {PlaylisterActions}      from './flux-infra/actions.js'
+import {playlistResultStore}    from './flux-infra/stores.js'
+import {Track}                  from './views/spotify.jsx'
+import {PlayListSubmitter}      from './views/submitter.jsx'
 
 /** 
 * Playlist container
@@ -17,18 +16,22 @@ import {PlayListSubmitter} from './views.jsx'
 * getStores 
 * calculateState
 */
+
 //What is a class in JavaScript world? Simple sugar over the prototype-based OO pattern.
 class PlaylistContainer extends React.Component {
 
   // what is static? called without instantiating
   static getStores() {
-    return [PlaylistResultStore];
+    console.log("container get Stores is called")
+    console.log("inside getStores, playlistResultStore == " + playlistResultStore)
+    return [playlistResultStore];
   }
 
   static calculateState() {
     console.log("Container is calculating state")
-    console.log(this.state)
-    var playlistStoreState = PlaylistResultStore.getState();
+    console.log("Container state is " + this.state)
+    console.log("Container stores is " + this.getStores())
+    var playlistStoreState = playlistResultStore.getState();
     console.log("playlistStoreState == " + JSON.stringify(playlistStoreState));
     return {
       query: playlistStoreState.query,
@@ -37,7 +40,7 @@ class PlaylistContainer extends React.Component {
   }
 
   render() {
- 
+    console.log("PlaylistContainer.render()")
     var playlist = this.state.result.playlist;
     
     if (playlist.length === 0) {
@@ -57,11 +60,7 @@ class PlaylistContainer extends React.Component {
   }
 } 
 
-/**
-*  Views
-*/
 var QueryContainer = Container.create(PlaylistContainer);
-
 
 ReactDOM.render(
    <PlayListSubmitter />, 
