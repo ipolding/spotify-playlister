@@ -33,7 +33,6 @@ export class PlayListSubmitter extends React.Component {
 
   getPlaylist() {
     var query = this.state.data.map(getTextEntryValues);
-    console.log("Submitter asked for playlist: " + query)
     PlaylisterActions.createNewQuery(this.state.data.map(data => data.value));
     PlaylisterActions.requestPlaylist(query);
   }

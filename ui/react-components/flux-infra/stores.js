@@ -1,4 +1,4 @@
-import {x,PlaylistDispatcher}                      from './dispatcher.js';
+import {x,PlaylistDispatcher}   from './dispatcher.js';
 import {ReduceStore}            from 'flux/utils';
 import * as PlaylisterConstants from './constants.js';
 

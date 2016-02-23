@@ -28,11 +28,8 @@ class PlaylistContainer extends React.Component {
   }
 
   static calculateState() {
-    console.log("Container is calculating state")
-    console.log("Container state is " + this.state)
-    console.log("Container stores is " + this.getStores())
     var playlistStoreState = playlistResultStore.getState();
-    console.log("playlistStoreState == " + JSON.stringify(playlistStoreState));
+    console.log("recalculated playlistStoreState == " + JSON.stringify(playlistStoreState));
     return {
       query: playlistStoreState.query,
       result: playlistStoreState.result
@@ -69,5 +66,5 @@ ReactDOM.render(
 
 ReactDOM.render(
    <QueryContainer />,
-   document.getElementById('responseStore')
+   document.getElementById('playlist')
    );
