@@ -4,14 +4,16 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
+// docker plugin
+enablePlugins(DockerPlugin)
+
 scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
-  jdbc,
   cache,
   ws,
   specs2 % Test,
-filters
+  filters
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
