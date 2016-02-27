@@ -1,0 +1,11 @@
+#artistList {
+  float:left;
+}
+
+#playlist {
+  float:right;
+}% 
+
+#footer {
+    background-color: black;
+}

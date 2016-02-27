@@ -3,14 +3,11 @@
  <html lang="en">
      <head>
          <title>Spotify Playlister</title>
-         <link rel="stylesheet" media="screen" href="stylesheets/main.css">
-         <link rel="shortcut icon" type="image/png" href="images/favicon.png">
          <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
          <!-- Custom styles for this template -->
- 
          <link rel="stylesheet" href="bootstrap/jumbotron.css"/>
             <!-- Bootstrap core CSS -->
- 
+          <link rel="stylesheet" href="custom.css"/>
  
      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
      <!--[if lt IE 9]>
@@ -35,35 +32,23 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Spotify Playlister </a>
+          <a class="navbar-brand">Spotify Playlister </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          
+                  <img src="/images/sound-wave.svg">
+
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-
+</br>
     <div class="jumbotron">
       <div class="container">  
-
-        <h1>
-        Create a playlist!
-        </h1>
-        <p>Heard about a great artist lately? Let us go fetch their most popular tracks on Spotify!
-        </p>
-        <div>
-          <div id="artistList"></div>
+          <div style="float:left;" id="artistList"></div>
           <div id="playlist"></div>
-        </div>
-
       </div> <!-- /container -->
     </div>  <!-- /jumbotron -->
     
-    <footer class="container">
-      <p>&copy; iPolding 2016. Powered by Spotify</p>
-    </footer>
 
 <!-- react components -->
     <script src="bundle.js"></script>

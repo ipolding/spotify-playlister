@@ -1,0 +1,16 @@
+activator
+activator.bat
+activator-launch-1.3.2.jar
+app
+build.sbt
+bundle.js
+conf
+Dockerfile
+echo
+LICENSE
+logs
+project
+public
+README
+target
+test

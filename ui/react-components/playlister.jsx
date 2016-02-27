@@ -46,11 +46,22 @@ class PlaylistContainer extends React.Component {
       var tracks   = playlist.map(function(letter) {return <Track key={letter} track={letter}/>});
       console.log(JSON.stringify(this.state.query))
 
+     var trackRows = []
+     for (var i = 0; i < tracks.length; i+=3) {
+        trackRows.push(<tr>
+                           <td>{tracks[i]}</td>
+                           <td>{tracks[i+1]}</td>
+                           <td>{tracks[i+2]}</td>
+                      </tr>)
+     }
+
     return (
       <div>
-        <h4>You asked for: {this.state.query.join(", ")}</h4>
-        <h4>We found: {this.state.result.artists.join(", ")}</h4>
-        {tracks}
+        <table>
+        <tbody>
+          {trackRows}
+        </tbody>
+        </table>
       </div>
     );
   }

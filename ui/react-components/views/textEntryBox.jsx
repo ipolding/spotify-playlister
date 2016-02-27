@@ -84,7 +84,6 @@ export class TextEntryBox extends React.Component{
     render() {
      return (
        <div className="textEntryBox" onSubmit={this.handleSubmit}>
-         <h1>Artists</h1>
          <PreviousTextEntries updateEntry={this.props.updateEntry} createEntry={this.props.createEntry} data={this.props.data} />
          <TextEntry updateEntry={this.props.updateEntry} createEntry={this.props.createEntry} data={this.props.data} />
          </div>

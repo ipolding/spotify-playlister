@@ -41,7 +41,7 @@ export class PlayListSubmitter extends React.Component {
     return (
       <div className="submitter" onSubmit={this.handleSubmit}>
         <TextEntryBox updateEntry={this.updateEntry} createEntry={this.createEntry} data={this.state.data}/>
-        <button onClick={this.getPlaylist} className="btn btn-primary btn-lg">Get Top Tracks! &raquo;</button>
+        <button onClick={this.getPlaylist} className="btn btn-primary btn-lg">Go! &raquo;</button>
       </div>
     );
   }
