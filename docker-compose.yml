@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  ui:
+    ports:
+     - "80:80"  
+    depends_on:
+      - api
+    image: "ipolding/playlister-ui"
+  api:
+    ports:
+     - "9000:9000"
+    image: "ipolding/playlister-api"   
