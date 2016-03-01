@@ -125,22 +125,41 @@
 	        });
 	        console.log(JSON.stringify(this.state.query));
 
+	        var trackRows = [];
+	        for (var i = 0; i < tracks.length; i += 3) {
+	          trackRows.push(_react2.default.createElement(
+	            'tr',
+	            null,
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              tracks[i]
+	            ),
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              tracks[i + 1]
+	            ),
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              tracks[i + 2]
+	            )
+	          ));
+	        }
+
 	        return _react2.default.createElement(
 	          'div',
 	          null,
 	          _react2.default.createElement(
-	            'h4',
+	            'table',
 	            null,
-	            'You asked for: ',
-	            this.state.query.join(", ")
-	          ),
-	          _react2.default.createElement(
-	            'h4',
-	            null,
-	            'We found: ',
-	            this.state.result.artists.join(", ")
-	          ),
-	          tracks
+	            _react2.default.createElement(
+	              'tbody',
+	              null,
+	              trackRows
+	            )
+	          )
 	        );
 	      }
 	    }
@@ -26712,7 +26731,7 @@
 /* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -26733,16 +26752,6 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	// export class Track extends React.Component {
-	//     render () {
-	//       return (
-	//           <iframe src={"https://embed.spotify.com/?uri=spotify:track:" + this.props.track}
-	//               width="300" height="80" frameborder="0" allowtransparency="true">
-	//           </iframe>
-	//       );
-	//     }
-	// }
-
 	var Track = exports.Track = function (_React$Component) {
 	    _inherits(Track, _React$Component);
 
@@ -26753,18 +26762,23 @@
 	    }
 
 	    _createClass(Track, [{
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
-	            return _react2.default.createElement(
-	                'h3',
-	                null,
-	                this.props.track
-	            );
+	            return _react2.default.createElement("iframe", { src: "https://embed.spotify.com/?uri=spotify:track:" + this.props.track,
+	                width: "300", height: "80", frameborder: "0", allowtransparency: "true" });
 	        }
 	    }]);
 
 	    return Track;
 	}(_react2.default.Component);
+
+	// export class Track extends React.Component {
+	//     render () {
+	//       return (
+	//           <h3>{this.props.track}</h3>
+	//       );
+	//     }
+	// }
 
 /***/ },
 /* 185 */
@@ -26850,11 +26864,11 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'submitter', onSubmit: this.handleSubmit },
-	        _react2.default.createElement(_textEntryBox.TextEntryBox, { updateEntry: this.updateEntry, createEntry: this.createEntry, data: this.state.data }),
+	        _react2.default.createElement(_textEntryBox.TextEntryBox, { placeholder: 'Artist', updateEntry: this.updateEntry, createEntry: this.createEntry, data: this.state.data }),
 	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.getPlaylist, className: 'btn btn-primary btn-lg' },
-	          'Get Top Tracks! »'
+	          'Go! »'
 	        )
 	      );
 	    }
@@ -26948,7 +26962,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement('input', { placeholder: 'Artist...',
+	        _react2.default.createElement('input', { placeholder: this.props.placeholder,
 	          value: this.state.text,
 	          className: 'previousTextEntry',
 	          onBlur: this.handleBlur,
@@ -27019,11 +27033,6 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'textEntryBox', onSubmit: this.handleSubmit },
-	        _react2.default.createElement(
-	          'h1',
-	          null,
-	          'Artists'
-	        ),
 	        _react2.default.createElement(PreviousTextEntries, { updateEntry: this.props.updateEntry, createEntry: this.props.createEntry, data: this.props.data }),
 	        _react2.default.createElement(TextEntry, { updateEntry: this.props.updateEntry, createEntry: this.props.createEntry, data: this.props.data })
 	      );

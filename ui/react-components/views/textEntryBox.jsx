@@ -43,7 +43,7 @@ export class TextEntry extends React.Component {
      var message = this.state.message;
      return (
       <div>
-        <input placeholder="Artist..." 
+        <input placeholder={this.props.placeholder} 
                value={this.state.text} 
                className="previousTextEntry" 
                onBlur={this.handleBlur} 
@@ -85,7 +85,7 @@ export class TextEntryBox extends React.Component{
      return (
        <div className="textEntryBox" onSubmit={this.handleSubmit}>
          <PreviousTextEntries updateEntry={this.props.updateEntry} createEntry={this.props.createEntry} data={this.props.data} />
-         <TextEntry updateEntry={this.props.updateEntry} createEntry={this.props.createEntry} data={this.props.data} />
+         <TextEntry placeholder={this.props.placeholder} updateEntry={this.props.updateEntry} createEntry={this.props.createEntry} data={this.props.data} />
          </div>
      );
    }
