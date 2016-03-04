@@ -78,4 +78,4 @@ ReactDOM.render(
 ReactDOM.render(
    <QueryContainer />,
    document.getElementById('playlist')
-   );
+   );  

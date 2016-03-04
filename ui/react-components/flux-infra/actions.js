@@ -14,7 +14,7 @@ export function createNewQuery(artistArray) {
 
 export function requestPlaylist(query) {
 
-    var xmlhttp = new XMLHttpRequest(), method = 'GET', url = 'http://localhost:9000/playlist?artistQuery=' + query;
+    var xmlhttp = new XMLHttpRequest(), method = 'GET', url = SPOTIFY_API_URL + '/playlist?artistQuery=' + query;
 
     xmlhttp.open(method, url, true);
     xmlhttp.onreadystatechange = function () {
